@@ -2,11 +2,23 @@
 from setuptools import setup, find_packages
 from codecs import open
 import os
-
+from distutils.core import setup, Command
 
 def read(fname):
     path = os.path.join(os.path.dirname(__file__), fname)
     return open(path, encoding='utf-8').read()
+
+class PyTest(Command):
+    user_options = []
+    def initialize_options(self):
+        pass
+    def finalize_options(self):
+        pass
+    def run(self):
+        import sys,subprocess
+        errno = subprocess.call([sys.executable, 'runtests.py'])
+        raise SystemExit(errno)
+
 
 
 setup(
@@ -42,4 +54,6 @@ setup(
     ],
 
     long_description=read('README.rst'),
+
+    cmdclass = {'test': PyTest},
 )
